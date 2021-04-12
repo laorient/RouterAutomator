@@ -2,7 +2,7 @@ import os
 import sys
 
 sys.path.append("de.marius")
-# sys.path.append("selenium-3.4.3")
+sys.path.append("selenium-3.4.3")
 
 from configparser import ConfigParser
 
@@ -54,7 +54,7 @@ def performActions(driverPath: str, config: ConfigParser, actions):
                        + " password: " + password
                        + " tasks: " + tasks.__str__())
 
-        driver = webdriver.Chrome()
+        driver = webdriver.Firefox(executable_path=driverPath)
         router = RouterFactory(driver, webInterfaceUrl).getRouter()
         for task in tasks:
             tryHandleRouterTask(password, router, task, username)
