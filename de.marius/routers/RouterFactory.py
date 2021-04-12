@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append("../../selenium-3.4.3")
+# sys.path.append("../../selenium-3.4.3")
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -10,14 +10,14 @@ from routers.ArcherC2 import ArcherC2
 from routers.ArcherC7 import ArcherC7
 from routers.OpenWrtLuCi import OpenWrtLuCi
 from routers.CiscoEPC3925 import CiscoEPC3925
+from routers.Deco import Deco
 from routers.BaseRouter import BaseRouter
 
-sys.path.append("selenium-3.4.3")
+# sys.path.append("selenium-3.4.3")
 
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
 from selenium import webdriver
-
 
 class RouterFactory():
     def __init__(self, webdriver: webdriver, webinterfaceUrl):
@@ -27,7 +27,8 @@ class RouterFactory():
 
     def isArcherC7(self) -> bool:
         try:
-            c7 = "Model No. Archer C7" in self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, "topLogo"))).text
+            c7 = "Model No. Archer C7" in self.wait.until(
+                EC.presence_of_element_located((By.CLASS_NAME, "topLogo"))).text
         except NoSuchElementException:
             c7 = False
         except TimeoutException:
@@ -36,7 +37,8 @@ class RouterFactory():
 
     def isArcherC2(self):
         try:
-            c2 = "Model No. Archer C2" in self.wait.until(EC.presence_of_element_located((By.ID, "mnum"))).text
+            c2 = "Model No. Archer C2" in self.wait.until(
+                EC.presence_of_element_located((By.ID, "mnum"))).text
         except NoSuchElementException:
             c2 = False
         except TimeoutException:
@@ -45,7 +47,8 @@ class RouterFactory():
 
     def isOpenWrtLuCi(self):
         try:
-            footer = self.wait.until(EC.presence_of_element_located((By.TAG_NAME, 'footer')))
+            footer = self.wait.until(
+                EC.presence_of_element_located((By.TAG_NAME, 'footer')))
             hyperlink = footer.find_element(By.TAG_NAME, 'a')
             return "Powered by LuCI" in hyperlink.text
 
@@ -58,7 +61,8 @@ class RouterFactory():
 
     def isCiscoEPC3925(self):
         try:
-            self.wait.until(EC.presence_of_element_located((By.XPATH, "//td[@class='Lmodel' and text()[contains(.,'EPC3925')]]")))
+            self.wait.until(EC.presence_of_element_located(
+                (By.XPATH, "//td[@class='Lmodel' and text()[contains(.,'EPC3925')]]")))
             # self.wait.until(EC.presence_of_element_located((By.XPATH, "//td[@class='Lmodel' and contains(text()='EPC3925')]")))
             cisco = True
         except NoSuchElementException:
@@ -67,8 +71,21 @@ class RouterFactory():
             cisco = False
         return cisco
 
+    def isDeco(self):
+        try:
+            self.wait.until(EC.presence_of_element_located(
+                (By.XPATH, "//div/label[text()[contains(.,'Deco')]]")))
+            deco = True
+        except NoSuchElementException:
+            deco = False
+        except TimeoutException:
+            deco = False
+        return deco
+
     def getRouter(self) -> BaseRouter:
         self.webdriver.get(self.webinterfaceUrl)
+        if self.isDeco():
+            return Deco(self.webdriver, self.webinterfaceUrl)
         if self.isArcherC7():
             return ArcherC7(self.webdriver, self.webinterfaceUrl)
         if self.isArcherC2():

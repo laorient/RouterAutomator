@@ -2,7 +2,7 @@ import os
 import sys
 
 sys.path.append("de.marius")
-sys.path.append("selenium-3.4.3")
+# sys.path.append("selenium-3.4.3")
 
 from configparser import ConfigParser
 
@@ -15,12 +15,11 @@ from selenium import webdriver
 from DriverSetup import DriverSetup
 from Logger import Logger, LogLevel
 
-
 def initConfig():
     config = ConfigParser()
     configPath = os.path.join(os.getcwd(), "Config.ini")
     config.read(filenames=configPath)
-    sections = config.sections();
+    sections = config.sections()
     if len(sections) == 0 or (not sections.__contains__("actions")):
         Logger.logInfo("Config file is empty. Bye!")
         quit()
@@ -55,7 +54,7 @@ def performActions(driverPath: str, config: ConfigParser, actions):
                        + " password: " + password
                        + " tasks: " + tasks.__str__())
 
-        driver = webdriver.Firefox(executable_path=driverPath)
+        driver = webdriver.Chrome()
         router = RouterFactory(driver, webInterfaceUrl).getRouter()
         for task in tasks:
             tryHandleRouterTask(password, router, task, username)
@@ -70,9 +69,11 @@ def tryHandleRouterTask(password, router, task, username):
     try:
         handleRouterTask(router, username, password, task)
     except Exception as wde:
-        Logger.logError("Performing task '" + task + "' produced exception: " + wde.__str__())
+        Logger.logError("Performing task '" + task +
+                        "' produced exception: " + wde.__str__())
     except:
-        Logger.logError("Unknown exception while performing task '" + task + "'")
+        Logger.logError(
+            "Unknown exception while performing task '" + task + "'")
     finally:
         Logger.logInfo("Performed task: " + task)
 
@@ -90,6 +91,7 @@ driverSetup.init()
 config = initConfig()
 
 # Run any active actions
-activeActionTuples = filter(lambda action: action[1] == 'true', config.items("actions"))
+activeActionTuples = filter(
+    lambda action: action[1] == 'true', config.items("actions"))
 activeActionNames = map(lambda action: action[0], activeActionTuples)
 performActions(driverSetup.getDriverPath(), config, activeActionNames)
