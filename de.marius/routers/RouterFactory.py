@@ -85,7 +85,7 @@ class RouterFactory():
 
     def getRouter(self) -> BaseRouter:
         self.webdriver.get(self.webinterfaceUrl)
-        time.sleep(10)
+        time.sleep(20)
         if self.isDeco():
             return Deco(self.webdriver, self.webinterfaceUrl)
         if self.isArcherC7():

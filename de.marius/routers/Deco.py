@@ -19,41 +19,43 @@ class Deco(BaseRouter):
             "password-hidden")
         passwordInput.clear()
         passwordInput.send_keys(password)
-
+        time.sleep(5)
+        
         loginButton = self.webdriver.find_element_by_css_selector(
             "a.button-button")
         loginButton.click()
         time.sleep(5)
 
     def reboot(self, password):
+        time.sleep(20)
         advancedButton = self.driverWait.until(
             EC.presence_of_element_located((By.XPATH, "//ul/li[@navi-value='advanced']/a")))
         advancedButton.click()
-        time.sleep(5)
+        time.sleep(10)
 
         systemButton = self.driverWait.until(
             EC.presence_of_element_located((By.XPATH, "//ul/li[@navi-value='system']/a")))
         systemButton.click()
-        time.sleep(5)
+        time.sleep(10)
 
         rebootButton = self.driverWait.until(
             EC.presence_of_element_located((By.XPATH, "//ul/li[@navi-value='reboot']/a")))
         rebootButton.click()
-        time.sleep(5)
+        time.sleep(10)
 
         rebootAllButton = self.driverWait.until(
             EC.presence_of_element_located((By.XPATH, "//a[@title='REBOOT ALL']")))
         rebootAllButton.click()
-        time.sleep(5)
+        time.sleep(10)
 
         confirmButton = self.driverWait.until(
             EC.presence_of_element_located((By.XPATH, "//div/a[@title='Reboot']")))
         confirmButton.click()
-        time.sleep(5)
+        time.sleep(10)
 
         Logger.logInfo("Router rebooting")
 
-        time.sleep(5)
+        time.sleep(15)
 
     def logOut(self):
         self.driverWait.until(
