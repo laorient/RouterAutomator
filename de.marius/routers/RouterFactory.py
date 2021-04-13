@@ -1,6 +1,7 @@
 import sys
+import time
 
-# sys.path.append("../../selenium-3.4.3")
+sys.path.append("../../selenium-3.4.3")
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -13,7 +14,7 @@ from routers.CiscoEPC3925 import CiscoEPC3925
 from routers.Deco import Deco
 from routers.BaseRouter import BaseRouter
 
-# sys.path.append("selenium-3.4.3")
+sys.path.append("selenium-3.4.3")
 
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 
@@ -84,6 +85,7 @@ class RouterFactory():
 
     def getRouter(self) -> BaseRouter:
         self.webdriver.get(self.webinterfaceUrl)
+        time.sleep(10)
         if self.isDeco():
             return Deco(self.webdriver, self.webinterfaceUrl)
         if self.isArcherC7():

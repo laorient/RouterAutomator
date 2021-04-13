@@ -29,12 +29,12 @@ class Deco(BaseRouter):
         advancedButton = self.driverWait.until(
             EC.presence_of_element_located((By.XPATH, "//ul/li[@navi-value='advanced']/a")))
         advancedButton.click()
-        time.sleep(2)
+        time.sleep(5)
 
         systemButton = self.driverWait.until(
             EC.presence_of_element_located((By.XPATH, "//ul/li[@navi-value='system']/a")))
         systemButton.click()
-        time.sleep(2)
+        time.sleep(5)
 
         rebootButton = self.driverWait.until(
             EC.presence_of_element_located((By.XPATH, "//ul/li[@navi-value='reboot']/a")))
@@ -44,22 +44,22 @@ class Deco(BaseRouter):
         rebootAllButton = self.driverWait.until(
             EC.presence_of_element_located((By.XPATH, "//a[@title='REBOOT ALL']")))
         rebootAllButton.click()
-        time.sleep(2)
+        time.sleep(5)
 
         confirmButton = self.driverWait.until(
             EC.presence_of_element_located((By.XPATH, "//div/a[@title='Reboot']")))
         confirmButton.click()
-        time.sleep(2)
+        time.sleep(5)
 
         Logger.logInfo("Router rebooting")
 
-        time.sleep(4)
+        time.sleep(5)
 
     def logOut(self):
         self.driverWait.until(
             EC.presence_of_element_located((By.ID, "logout-button")))
 
-        time.sleep(2)
+        time.sleep(5)
         logoutButton = self.webdriver.find_element_by_xpath(
             "//div[@id='logout-button']/a")
 
